@@ -1,0 +1,13 @@
+rh-footer > rh-footer-block {
+  width: 100%;
+}
+
+:is(rh-footer, rh-global-footer) :is([slot^="links"]) {
+  padding: 0;
+  margin: 0;
+}
+
+:is(rh-footer, rh-global-footer) :is(a, img) {
+  margin-left: 0;
+  margin-right: 0;
+}

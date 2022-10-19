@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+# Red Hat Design System Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Preview](https://rollup-rhds-demo.vercel.app/)
 
-## Available Scripts
+![Screenshot](./screenshot.png)
 
-In the project directory, you can run:
+This repo serves as an example of how you can use [Rollup](https://rollupjs.org/guide/en/) to create a custom bundle for your components.
 
-### `npm start`
+## Usage
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+npm run build
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This will generate the following two files.
 
-### `npm test`
+```bash
+dist/bundle.js
+dist/bundle.css
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can then import those files.
 
-### `npm run build`
+```html
+<!DOCTYPE html>
+<head>
+	<link href="dist/bundle.css" rel="stylesheet" />
+</head>
+<body>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  <script type="module" src="./dist/bundle.js"></script>
+</body>
+</html>
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Updating Dependencies
 
-### `npm run eject`
+Add dependency to `package.json`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`package.json`
+```json
+{
+  ...
+  "dependencies": {
+    "@patternfly/pfe-accordion": "^1.12.3",
+    "@patternfly/pfe-band": "^1.12.3",
+    "@patternfly/pfe-card": "^1.12.3",
+    "@patternfly/pfe-cta": "^1.12.3",
+    "@patternfly/pfe-jump-links": "^1.12.3",
+    "@patternfly/pfe-navigation": "^1.12.3",
+    "@patternfly/pfe-select": "^1.12.3",
+    "@patternfly/pfe-styles": "^1.12.3",
+    "@patternfly/pfe-tabs": "^1.12.3",
+    "@patternfly/pfelement": "^1.12.3",
+    "@rhds/elements": "^1.0.0-beta.23"
+  }
+}
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Import your dependency to the bundle entrypoint, `bundle.js`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`bundle.js`
+```js
+import '@patternfly/pfe-band/dist/pfe-band.js';
+import '@patternfly/pfe-tabs/dist/pfe-tabs.js';
+import '@patternfly/pfe-card/dist/pfe-card.js';
+import '@rhds/elements/rh-footer/rh-footer-lightdom.css';
+import '@rhds/elements/rh-footer/rh-footer.js';
+import '@rhds/elements/rh-cta/rh-cta.js';
+import '@rhds/elements/rh-footer/rh-footer-lightdom.css';
+import '@patternfly/pfe-styles/dist/pfe-base.css';
+import '@patternfly/pfe-styles/dist/pfe-layouts.css';
+import './tweaks.css';
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Patches
 
-## Learn More
+[Patch-Package](https://www.npmjs.com/package/patch-package) is used to automatically apply an changes to the node_modules dependencies.
+The patches are defined in the `patches` directory.  They are automatically applied after `npm install` has completed.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Proxy
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To preview changes on the live site we use the [spandx](https://www.npmjs.com/package/spandx) tool.  This does the following:
 
-### Code Splitting
+1. Starts a proxy web server.
+2. Dynamically adds files in the `dist` directory.
+3. Dynamically replaces the existing footer with <rh-footer>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Start Proxy Server
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm run proxy
+```
