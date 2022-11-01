@@ -1,6 +1,7 @@
 import '@patternfly/pfe-band/dist/pfe-band.js';
 import '@patternfly/pfe-tabs/dist/pfe-tabs.js';
 import '@patternfly/pfe-card/dist/pfe-card.js';
+import '@patternfly/pfe-cta/dist/pfe-cta.js';
 
 import '@rhds/elements/rh-footer/rh-footer-lightdom.css';
 import '@rhds/elements/rh-footer/rh-footer.js';
